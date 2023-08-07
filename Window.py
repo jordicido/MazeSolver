@@ -30,11 +30,3 @@ class Window:
     def draw_line(self, line, fill_color):
         line.draw(self.__canvas, fill_color)
         
-
-
-def main():
-    win = Window(1800, 1400, "Maze Solver")
-    maze = Maze(10, 10, 10, 10, 100, 100, win)
-    win.wait_for_close()
-
-main()

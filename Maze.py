@@ -43,7 +43,7 @@ class Maze:
         if cell == None:
             offset_x = self.x1 + self.cell_size_x*j+2
             offset_y = self.y1 + self.cell_size_y*i+2
-            cell = Cell(offset_x, offset_y, offset_x+self.cell_size_x, offset_y+self.cell_size_y, self.win)
+            cell = Cell(offset_x, offset_y, offset_x+self.cell_size_x, offset_y+self.cell_size_y, False, self.win)
     
         if self.win != None:
             cell.draw()
@@ -57,6 +57,7 @@ class Maze:
     def _break_entrance_and_exit(self):
         self._cells[0][0].has_top_wall = False
         self._cells[len(self._cells)-1][len(self._cells[0])-1].has_bottom_wall = False
+        self._cells[len(self._cells)-1][len(self._cells[0])-1].end = True
         self._draw_cell(0, 0, self._cells[0][0])
         self._draw_cell(0, 0, self._cells[len(self._cells)-1][len(self._cells[0])-1])
     
@@ -99,4 +100,41 @@ class Maze:
         for i in range(len(self._cells)):
             for j in range(len(self._cells[i])):
                 self._cells[i][j].visited = False
+    
+    def solve(self):
+        return self._solve_r(0,0)
+
+    def _solve_r(self, i, j):
+        self._animate()
+        self._cells[i][j].visited = True
+
+        if self._cells[i][j].end:
+            return True
+    
+        if i - 1 > 0 and not self._cells[i-1][j].visited and not self._cells[i][j].has_top_wall:
+            self._cells[i][j].draw_move(self._cells[i-1][j])
+            result = self._solve_r(i-1, j)
+            if result:
+                return True
+            self._cells[i-1][j].draw_move(self._cells[i][j], True)
+        if j - 1 > 0 and not self._cells[i][j-1].visited and not self._cells[i][j].has_left_wall:
+            self._cells[i][j].draw_move(self._cells[i][j-1])
+            result = self._solve_r(i, j-1)
+            if result:
+                return True
+            self._cells[i][j-1].draw_move(self._cells[i][j], True)
+        if j + 1 < len(self._cells[i]) and not self._cells[i][j+1].visited and not self._cells[i][j].has_right_wall:
+            self._cells[i][j].draw_move(self._cells[i][j+1])
+            result = self._solve_r(i, j+1)
+            if result:
+                return True
+            self._cells[i][j+1].draw_move(self._cells[i][j], True)
+        if i + 1 < len(self._cells) and not self._cells[i+1][j].visited and not self._cells[i][j].has_bottom_wall:
+            self._cells[i][j].draw_move(self._cells[i+1][j])
+            result = self._solve_r(i+1, j)
+            if result:
+                return True
+            self._cells[i+1][j].draw_move(self._cells[i][j], True)
         
+
+        return False    

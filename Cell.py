@@ -8,6 +8,7 @@ class Cell:
                  top_left_corner_y,
                  bottom_right_corner_x, 
                  bottom_right_corner_y, 
+                 end=False,
                  win=None
     ):
         self.has_left_wall = True
@@ -18,6 +19,7 @@ class Cell:
         self._x2 = bottom_right_corner_x
         self._y1 = top_left_corner_y
         self._y2 = bottom_right_corner_y
+        self.end = end
         self.visited = False
         self._win = win
     
