@@ -18,6 +18,7 @@ class Cell:
         self._x2 = bottom_right_corner_x
         self._y1 = top_left_corner_y
         self._y2 = bottom_right_corner_y
+        self.visited = False
         self._win = win
     
     def draw(self):

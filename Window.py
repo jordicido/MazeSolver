@@ -34,7 +34,7 @@ class Window:
 
 def main():
     win = Window(1800, 1400, "Maze Solver")
-    maze = Maze(10, 10, 5, 5, 100, 100, win)
+    maze = Maze(10, 10, 10, 10, 100, 100, win)
     win.wait_for_close()
 
 main()
